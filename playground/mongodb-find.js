@@ -18,14 +18,20 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, client)=>{
     //   console.log('Unable to fetch todos',err)
     // })
 
-    //the find().toArray() return the promise. so we use then...
-    db.collection('Todos').find().count().then((count)=>{
-      console.log(`Todos count:${count} `)
-      
-    }).catch((err)=>{
-      console.log('Unable to fetch todos',err)
-    })
+    // //the find().toArray() return the promise. so we use then...
+    // db.collection('Users').find().count().then((count)=>{
+    //   console.log(`Users count:${count} `)
+    //
+    // }).catch((err)=>{
+    //   console.log('Unable to fetch todos',err)
+    // })
 
+
+    db.collection('Users').find({name:'Arsalan'}).toArray().then((docs)=>{
+      console.log(docs)
+    }).catch((err)=>{
+      console.log(err)
+    });
 
     // client.close()
 })
