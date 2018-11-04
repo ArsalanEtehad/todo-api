@@ -8,7 +8,9 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, client)=>{
     const db = client.db('TodoApp');
 
     //the find().toArray() return the promise. so we use then...
-    db.collection('Todos').find({completed: true}).toArray().then((docs)=>{
+    db.collection('Todos').find({
+      _id: new ObjectID('5bde669017335629aa1066dd')
+    }).toArray().then((docs)=>{
       console.log('Todos: ')
       console.log(JSON.stringify(docs,undefined,2))
 
