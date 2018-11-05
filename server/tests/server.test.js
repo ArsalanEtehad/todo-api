@@ -133,9 +133,9 @@ describe('GET /todos/:id', ()=>{
 
   it('should return 404 for non-Object ID', (done)=>{
     request(app)
-    .get(`/todos/${213}`)
-    .expect(404)
-    .end(done)
+      .get(`/todos/${213}`)
+      .expect(404)
+      .end(done)
   })
 
 })
