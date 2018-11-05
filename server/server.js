@@ -17,7 +17,7 @@ app.post('/todos', (req, res)=>{
     text: req.body.text
   })
   todo.save().then((doc)=>{
-    res.status(200).send(doc)
+    res.send(doc)
   }).catch((err)=>{
     res.status(400).send(err)
   })
@@ -52,6 +52,5 @@ app.get('/todos/:id',(req,res)=>{
 app.listen(3000,()=>{
   console.log('Started on port 3000 ...')
 })
-
 
 module.exports={app}
