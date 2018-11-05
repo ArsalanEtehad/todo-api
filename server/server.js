@@ -33,11 +33,7 @@ newTodo.save().then((doc)=>{
 
 //----------
 
-var otherTodo = new Todo({
-  text: 'walk the dog',
-  completed: true,
-  completedAt: 123
-})
+var otherTodo = new Todo({})
 
 otherTodo.save().then((doc)=>{
   console.log(JSON.stringify(doc,undefined,2))
