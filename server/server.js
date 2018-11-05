@@ -9,7 +9,10 @@ mongoose.connect('mongodb://localhost:27017/TodoApp');
 //creating a mongoose model with fields and types of them
 var Todo = mongoose.model('Todo', {
   text:{
-    type: String
+    type: String,
+    required: true,
+    minlength: 1,
+    trim: true
   },
   completed: {
     type: Boolean
@@ -29,14 +32,4 @@ newTodo.save().then((doc)=>{
   console.log('successfully saved newTodo: ',doc)
 },(e)=>{
   console.log('Unable to save todo')
-})
-
-//----------
-
-var otherTodo = new Todo({})
-
-otherTodo.save().then((doc)=>{
-  console.log(JSON.stringify(doc,undefined,2))
-}).catch((err)=>{
-  console.log('Unable to save otherTodo: ',err)
 })
