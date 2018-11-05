@@ -58,4 +58,22 @@ describe('Post /todos', ()=>{
       })
     });
   })
+
+  it('should not create todo without data', (done)=>{
+    request(app)
+    .post('/todos')
+    .send({}) //or ({text: text}) I just used ES6 notation to make it simple
+    .expect(400)
+    .end(function(err, res) {
+      if (err) return done(err);
+      Todo.find().then((todos)=>{
+        expect(todos.length).toBe(0) //because at line 9 we remove all the documents in db. so it's always 1
+        done()
+      }).catch((err)=>{
+        done(err);
+      })
+    });
+  })
+
+
 })
