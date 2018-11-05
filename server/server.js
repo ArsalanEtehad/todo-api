@@ -1,27 +1,28 @@
-var {mongoose} = require('./db/mongoose')
+const express = require('express')
+const bodyParser = require('body-parser')
 
+var {mongoose} = require('./db/mongoose')
 var {Todo} = require('./models/todo')
 var {User}= require('./models/user')
 
-var newTodo = new Todo({
-  text: 'Feed the Cat'
+var app = express()
+
+app.use(bodyParser.json());
+
+//  Post /Todo    common URL to post Todo
+//  Get /Todo     common URL to get the todos or : Get /todo/dsahfjabgjah   for an individual toro
+app.post('/todos', (req, res)=>{
+  var todo = new Todo({
+    text: req.body.text
+  })
+  todo.save().then((doc)=>{
+    res.status(200).send(doc)
+  }).catch((err)=>{
+    res.status(400).send(err)
+  })
 })
 
-newTodo.save().then((doc)=>{
-  console.log('successfully saved newTodo: ',doc)
-},(e)=>{
-  console.log('Unable to save todo')
-})
 
-
-
-var user1 = new User({
-  name: 'John',
-  email: ' johndoe4@gmail.com'
-})
-
-user1.save().then((res)=>{
-  console.log('successfully added ',res)
-}).catch((err)=>{
-  console.log('Failed to add user: ', err)
+app.listen(3000,()=>{
+  console.log('Started on port 3000 ...')
 })

@@ -1,4 +1,4 @@
-var {mongoose} = require('../db/mongoose')
+var mongoose = require('mongoose');
 
 //creating a mongoose model with fields and types of them
 var Todo = mongoose.model('Todo', {
