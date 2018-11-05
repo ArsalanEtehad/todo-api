@@ -7,7 +7,7 @@ const {ObjectId} = require('mongodb')
 var tid = '5bdfc746255f5dcf4a752a07'
 var uid = '5bdfa04c60e6ffc84259c820'
 if(!ObjectId.isValid(tid)){
-  return console.log('tID not valid')
+  return console.log('ID not valid')
 }
 
 Todo.findById(tid).then((todo)=>{
@@ -20,7 +20,7 @@ Todo.findById(tid).then((todo)=>{
 })
 
 if(!ObjectId.isValid(uid)){
-  return console.log('uID not valid')
+  return console.log('ID not valid')
 }
 
 
@@ -32,26 +32,3 @@ User.findById(uid).then((user)=>{
 }).catch((err)=>{
   console.log(err)
 })
-
-// //all three find... are similar for this case. but best is findById if we looking for 1 by id.
-// Todo.find({
-//   _id: id
-// }).then((todos)=>{
-//   if(todos.length === 0){
-//     return console.log('ID not found')
-//   }
-//   console.log('todos: ', todos)
-// }).catch((err)=>{
-//   console.log('unable to fetch todo from db')
-// })
-//
-// Todo.findOne({
-//   _id: id
-// }).then((todos)=>{
-//   if(!todos){
-//     return console.log('ID not found')
-//   }
-//   console.log('todo: ', todos)
-// }).catch((err)=>{
-//   console.log('unable to fetch todo from db')
-// })
