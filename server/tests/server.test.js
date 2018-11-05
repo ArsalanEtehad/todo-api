@@ -33,18 +33,16 @@ beforeEach((done)=>{
 
 describe('Post /todos', ()=>{
   it('shoude create a new todo',(done)=>{ //done because it's async
-    var text = "test todo text"
+    var text = "test POST todo text";
 
     //testing POST request using supertest:
     request(app)
     .post('/todos')
     .send({text: text})
     .expect(200)
-
     .expect((res)=>{
-      expect(res.body.text).toBe(text)
+      expect(res.body.doc.text).toBe(text)
     })
-
     .end((err, res)=>{
       if (err){
         return done(err);
@@ -57,11 +55,8 @@ describe('Post /todos', ()=>{
       }).catch((err)=>{
         done(err);
       })
-
     })
-
   })
-
 
   it('should not create todo with invalid data', (done)=>{
     var text = ""
@@ -69,7 +64,7 @@ describe('Post /todos', ()=>{
     .post('/todos')
     .send({text}) //or ({text: text}) I just used ES6 notation to make it simple
     .expect(400)
-    .end(function(err, res) {
+    .end((err, res)=> {
       if (err) return done(err);
       Todo.find().then((todos)=>{
         expect(todos.length).toBe(3) //because at line 9 we remove all the documents in db. so it's always 1
@@ -85,7 +80,7 @@ describe('Post /todos', ()=>{
     .post('/todos')
     .send({}) //or ({text: text}) I just used ES6 notation to make it simple
     .expect(400)
-    .end(function(err, res) {
+    .end((err, res)=>{
       if (err) return done(err);
       Todo.find().then((todos)=>{
         expect(todos.length).toBe(3) //because at line 9 we remove all the documents in db. so it's always 1
@@ -99,7 +94,7 @@ describe('Post /todos', ()=>{
 });
 
 
-describe('Post /todos', ()=>{
+describe('Get /todos', ()=>{
   it('should get all todos',(done)=>{
     request(app)
     .get('/todos')
@@ -111,6 +106,7 @@ describe('Post /todos', ()=>{
     .end(done)
   })
 })
+
 
 describe('GET /todos/:id', ()=>{
   it('should return todo doc', (done)=>{
@@ -137,5 +133,41 @@ describe('GET /todos/:id', ()=>{
       .expect(404)
       .end(done)
   })
+})
 
+describe('DELETE /todos/:id', ()=>{
+  it('should delete todo doc',(done)=>{
+    var hexId = todo_list_for_test[0]._id.toHexString()
+    request(app)
+      .delete(`/todos/${hexId}`)
+      .expect(200)
+      .expect((res)=>{
+        expect(res.body.todo._id).toBe(hexId)
+      })
+      .end((err, res)=>{
+        if(err){
+          return done(err);
+        }
+        Todo.findById(hexId).then((todo)=>{
+          expect(todo).toBeFalsy()
+          done();
+        }).catch((err)=>{
+          done(err);
+        })
+      })
+  })
+
+  it('should return 404 if Todo not found', (done)=>{
+    var hexId = new ObjectID().toHexString()
+    request(app)
+      .delete(`/todos/${hexId}`)
+      .expect(404)
+      .end(done)
+  })
+  it('should return 404 if ObjectID is invalid',(done)=>{
+    request(app)
+      .delete(`/todos/${213}`)
+      .expect(404)
+      .end(done)
+  })
 })
