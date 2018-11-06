@@ -11,6 +11,12 @@ const port = process.env.PORT || 3000
 
 app.use(bodyParser.json());
 
+
+app.get('/', (req, res)=>{
+	res.send('main page');
+})
+
+
 //  Post /Todo    common URL to post Todo
 //  Get /Todo     common URL to get the todos or : Get /todo/dsahfjabgjah   for an individual toro
 app.post('/todos', (req, res)=>{
