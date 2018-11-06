@@ -170,4 +170,20 @@ describe('DELETE /todos/:id', ()=>{
       .expect(404)
       .end(done)
   })
-})
+});
+
+
+describe('PATCH /todos/:id',()=>{
+  it('should update todo doc', (done)=>{
+    var hexId = todo_list_for_test[0]._id.toHexString()
+    var text = `UPDATE: ${todo_list_for_test[0].text}`
+    request(app)
+      .patch(`/todos/${hexId}`)
+      .send({text})
+      .expect(200)
+      .expect((res)=>{
+        expect(res.body.todo.text).toBe(text)
+      })
+      .end(done)
+  });
+});
