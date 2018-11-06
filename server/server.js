@@ -12,12 +12,6 @@ const port = process.env.PORT || 3000
 
 app.use(bodyParser.json());
 
-
-app.get('/', (req, res)=>{
-	res.send('main page');
-})
-
-
 //  Post /Todo    common URL to post Todo
 //  Get /Todo     common URL to get the todos or : Get /todo/dsahfjabgjah   for an individual toro
 app.post('/todos', (req, res)=>{
@@ -72,7 +66,24 @@ app.delete('/todos/:id', (req, res)=>{
   })
 });
 
-app.
+app.patch('/todos/:id', (req, res)=>{
+  var id = req.params.id;
+  var body = _.pick(req.body, ['text']);
+
+  if(!ObjectID.isValid(id)){
+    return res.status(404).send();
+  }
+  Todo.findByIdAndUpdate(id,{$set:body},{new:true}).then((todo)=>{
+    if(!todo){
+      return res.status(404).send();
+    }
+    res.send({todo});
+  }).catch((err)=>{
+    res.status(400).send()
+  })
+});
+
+
 
 
 app.listen(port,()=>{
