@@ -111,18 +111,30 @@ app.post('/users', (req, res)=>{
   })
 });
 
-//--------------------------GET /users/me----------------------------
-app.get('/users/me',(req,res)=>{
+
+//++++++++++++++++++++++++++
+
+//midleware
+var authenticate = (req, res, next)=>{
   var token = req.header('x-auth'); //in line 108 we send the header('x-auth') by res and now we taking it to use it
 
   User.findByToken(token).then((user)=>{
     if(!user){
       return Promise.reject();
     }
-    res.send(user);
+    // res.send(user);
+    req.user = user;
+    req.token = token;
+    next();
+
   }).catch((err)=>{
-    res.status(401).send(err) //401 status: Unauthorized: authentication is required/
+    res.status(401).send() //401 status: Unauthorized: authentication is required/
   })
+
+}
+//--------------------------GET /users/me----------------------------
+app.get('/users/me', authenticate,(req,res)=>{
+  res.send(req.user);
 })
 
 
