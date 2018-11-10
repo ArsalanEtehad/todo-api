@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
+const _ = require('lodash')
+
 
 var UserSchema = mongoose.Schema({
   email:{
@@ -33,6 +35,13 @@ var UserSchema = mongoose.Schema({
   }]
 })
 
+//overriding the toJSON function to hide tokens and password to be shown to user
+UserSchema.methods.toJSON = function(){
+  var user = this;
+  var userObject = user.toObject()  //takes the mangoose variable and convert it to an js object
+
+  return _.pick(userObject, ['_id', 'email'])
+}
 
 //arrow functions don't bind the "this" keyword. so we just use reqular function here:
 UserSchema.methods.generateAuthToken = function () {
