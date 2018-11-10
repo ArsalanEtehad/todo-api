@@ -108,7 +108,7 @@ app.post('/users/login',(req, res)=>{
 })
 });
 
-//----------------------POST /users/login-------------------------
+//-------------------DELETE /users/me/token-------------------------
 
 //deleting the token of currently logged in user.
 app.delete('/users/me/token', authenticate, (req, res)=>{
