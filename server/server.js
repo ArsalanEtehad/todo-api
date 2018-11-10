@@ -106,7 +106,20 @@ app.post('/users/login',(req, res)=>{
     res.status(400).send();
   })
 })
-})
+});
+
+//----------------------POST /users/login-------------------------
+
+//deleting the token of currently logged in user.
+app.delete('/users/me/token', authenticate, (req, res)=>{
+
+  req.user.removeToken(req.token).then(()=>{
+    res.status(200).send();
+  }).catch((e)=>{
+    res.status(400).send();
+  })
+});
+
 
 //------------------------POST /users------------------------------
 app.post('/users', (req, res)=>{

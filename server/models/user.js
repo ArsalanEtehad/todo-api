@@ -57,6 +57,15 @@ UserSchema.methods.generateAuthToken = function () {
   });
 }
 
+UserSchema.methods.removeToken = function(token){
+  var user = this;
+  return user.update({
+    $pull:{
+      tokens:{token}
+    }
+  })
+}
+
 //.statics.y is a model model where as .methods.x is a instance method
 UserSchema.statics.findByToken = function (token){
   var User = this; //notice it's User not user. as this is a model method not an instance method
