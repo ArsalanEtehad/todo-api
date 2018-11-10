@@ -13,6 +13,12 @@ const port = process.env.PORT;
 
 app.use(bodyParser.json());
 
+
+
+//========================TODO ROUTERS============================
+
+
+//-----------------------POST /todos------------------------------
 //  Post /Todo    common URL to post Todo
 //  Get /Todo     common URL to get the todos or : Get /todo/dsahfjabgjah   for an individual toro
 app.post('/todos', (req, res)=>{
@@ -26,6 +32,7 @@ app.post('/todos', (req, res)=>{
   })
 });
 
+//------------------------GET /todos------------------------------
 app.get('/todos',(req,res)=>{
   Todo.find().then((todos)=>{
     res.send({todos})
@@ -34,6 +41,7 @@ app.get('/todos',(req,res)=>{
   })
 });
 
+//------------------------GET /todos/:id------------------------------
 app.get('/todos/:id',(req,res)=>{
   var id = req.params.id
   //validating the id in url
@@ -51,7 +59,7 @@ app.get('/todos/:id',(req,res)=>{
   })
 });
 
-
+//------------------------DELETE /todos/:id------------------------------
 app.delete('/todos/:id', (req, res)=>{
   var id = req.params.id;
   if(!ObjectID.isValid(id)){
@@ -67,6 +75,7 @@ app.delete('/todos/:id', (req, res)=>{
   })
 });
 
+//------------------------PATCH /todos/:id------------------------------
 app.patch('/todos/:id', (req, res)=>{
   var id = req.params.id;
   var body = _.pick(req.body, ['text']);
@@ -85,6 +94,11 @@ app.patch('/todos/:id', (req, res)=>{
 });
 
 
+
+
+//========================USER ROUTERS============================
+
+//------------------------POST /users------------------------------
 app.post('/users', (req, res)=>{
   var body = _.pick(req.body, ['email','password']);
   var user = new User(body);
@@ -98,6 +112,7 @@ app.post('/users', (req, res)=>{
   })
 });
 
+//--------------------------GET /users------------------------------
 app.get('/users',(req,res)=>{
   User.find().then((users)=>{
     res.send(users)
@@ -106,6 +121,7 @@ app.get('/users',(req,res)=>{
   })
 });
 
+//------------------------DELETE /users/:id------------------------------
 app.delete('/users/:id', (req, res)=>{
   var id = req.params.id;
   if(!ObjectID.isValid(id)){
@@ -121,13 +137,13 @@ app.delete('/users/:id', (req, res)=>{
   })
 });
 
+//--------------------------GET /users/:id------------------------------
 app.get('/users/:id',(req,res)=>{
   var id = req.params.id
   //validating the id in url
   if(!ObjectID.isValid(id)){
     return res.status(404).send()
   }
-  //searching in todo db by the id
   User.findById(id).then((user)=>{
     if(!user){
       return res.status(404).send()
