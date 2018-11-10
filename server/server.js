@@ -18,7 +18,6 @@ app.use(bodyParser.json());
 
 //========================TODO ROUTERS============================
 
-
 //-----------------------POST /todos------------------------------
 //  Post /Todo    common URL to post Todo
 //  Get /Todo     common URL to get the todos or : Get /todo/dsahfjabgjah   for an individual toro

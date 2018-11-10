@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash')
+const bcrypt = require('bcryptjs');
 
 
 var UserSchema = mongoose.Schema({
@@ -60,7 +61,6 @@ UserSchema.methods.generateAuthToken = function () {
 UserSchema.statics.findByToken = function (token){
   var User = this; //notice it's User not user. as this is a model method not an instance method
   var decoded;
-
   try{
     decoded = jwt.verify(token, 'secretSalt');
   }catch(e){
@@ -68,13 +68,39 @@ UserSchema.statics.findByToken = function (token){
       reject();//the "then" block on returns will never get called and it will invoked the catch part.
     })
   }
-
   return User.findOne({
     "_id": decoded._id,
     "tokens.token": token,
     "tokens.access": "auth"
   });
 }
+
+// var schema = new Schema(..);
+// schema.pre('save', function(next) {
+//   // do stuff
+//   next();
+// });
+
+
+//middleware PRE, runs before the action 'save'.
+UserSchema.pre('save', function(next){
+  var user = this;
+
+  if(user.isModified('password')){
+
+    bcrypt.genSalt(10, (err, salt)=> {
+        bcrypt.hash(user.password, salt, (err, hash)=> {
+          user.password = hash;
+          next();
+        });
+    });
+
+  }else{
+    next();
+  }
+
+});
+
 
 var User = mongoose.model('User',UserSchema)
 
