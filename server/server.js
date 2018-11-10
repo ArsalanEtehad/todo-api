@@ -106,20 +106,20 @@ app.get('/users',(req,res)=>{
   })
 });
 
-// app.delete('/users/:id', (req, res)=>{
-//   var id = req.params.id;
-//   if(!ObjectID.isValid(id)){
-//     return res.status(404).send();
-//   }
-//   User.findByIdAndDelete(id).then((user)=>{
-//     if(!user){
-//       return res.status(404).send();
-//     }
-//     res.send({user});
-//   }).catch((err)=>{
-//     res.status(400).send()
-//   })
-// });
+app.delete('/users/:id', (req, res)=>{
+  var id = req.params.id;
+  if(!ObjectID.isValid(id)){
+    return res.status(404).send();
+  }
+  User.findByIdAndDelete(id).then((user)=>{
+    if(!user){
+      return res.status(404).send();
+    }
+    res.send({user});
+  }).catch((err)=>{
+    res.status(400).send()
+  })
+});
 
 app.get('/users/:id',(req,res)=>{
   var id = req.params.id
