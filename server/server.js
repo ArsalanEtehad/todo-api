@@ -121,22 +121,22 @@ app.get('/users',(req,res)=>{
 //   })
 // });
 
-// app.get('/users/:id',(req,res)=>{
-//   var id = req.params.id
-//   //validating the id in url
-//   if(!ObjectID.isValid(id)){
-//     return res.status(404).send()
-//   }
-//   //searching in todo db by the id
-//   User.findById(id).then((user)=>{
-//     if(!user){
-//       return res.status(404).send()
-//     }
-//     res.send({user})  //sending todo as object: {todo}  //res.status(200).send(todo.text)
-//   }).catch((err)=>{
-//     res.status(400).send()
-//   })
-// });
+app.get('/users/:id',(req,res)=>{
+  var id = req.params.id
+  //validating the id in url
+  if(!ObjectID.isValid(id)){
+    return res.status(404).send()
+  }
+  //searching in todo db by the id
+  User.findById(id).then((user)=>{
+    if(!user){
+      return res.status(404).send()
+    }
+    res.send({user})  //sending todo as object: {todo}  //res.status(200).send(todo.text)
+  }).catch((err)=>{
+    res.status(400).send()
+  })
+});
 
 
 
