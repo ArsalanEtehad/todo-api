@@ -95,7 +95,6 @@ app.patch('/todos/:id', (req, res)=>{
 
 
 
-
 //========================USER ROUTERS============================
 
 //------------------------POST /users------------------------------
@@ -111,6 +110,21 @@ app.post('/users', (req, res)=>{
     res.status(400).send(err)
   })
 });
+
+//--------------------------GET /users/me----------------------------
+app.get('/users/me',(req,res)=>{
+  var token = req.header('x-auth'); //in line 108 we send the header('x-auth') by res and now we taking it to use it
+
+  User.findByToken(token).then((user)=>{
+    if(!user){
+      return Promise.reject();
+    }
+    res.send(user);
+  }).catch((err)=>{
+    res.status(401).send(err) //401 status: Unauthorized: authentication is required/
+  })
+})
+
 
 //--------------------------GET /users------------------------------
 app.get('/users',(req,res)=>{

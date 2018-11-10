@@ -56,6 +56,25 @@ UserSchema.methods.generateAuthToken = function () {
   });
 }
 
+//.statics.y is a model model where as .methods.x is a instance method
+UserSchema.statics.findByToken = function (token){
+  var User = this; //notice it's User not user. as this is a model method not an instance method
+  var decoded;
+
+  try{
+    decoded = jwt.verify(token, 'secretSalt');
+  }catch(e){
+    return new Promise((resolve, reject)=>{
+      reject();//the "then" block on returns will never get called and it will invoked the catch part.
+    })
+  }
+
+  return User.findOne({
+    "_id": decoded._id,
+    "tokens.token": token,
+    "tokens.access": "auth"
+  });
+}
 
 var User = mongoose.model('User',UserSchema)
 
