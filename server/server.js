@@ -21,9 +21,10 @@ app.use(bodyParser.json());
 //-----------------------POST /todos------------------------------
 //  Post /Todo    common URL to post Todo
 //  Get /Todo     common URL to get the todos or : Get /todo/dsahfjabgjah   for an individual toro
-app.post('/todos', (req, res)=>{
+app.post('/todos', authenticate,  (req, res)=>{
   var todo = new Todo({
-    text: req.body.text
+    text: req.body.text,
+    _creator: req.user._id
   })
   todo.save().then((doc)=>{
     res.send({doc})
@@ -33,8 +34,10 @@ app.post('/todos', (req, res)=>{
 });
 
 //------------------------GET /todos------------------------------
-app.get('/todos',(req,res)=>{
-  Todo.find().then((todos)=>{
+app.get('/todos',authenticate, (req,res)=>{
+  Todo.find({
+    _creator: req.user._id
+  }).then((todos)=>{
     res.send({todos})
   }).catch((err)=>{
     res.status(400).send(err)
