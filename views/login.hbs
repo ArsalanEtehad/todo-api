@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    {{> header}}
+    <p>{{pContent}}</p>
+    <form action="/users/login" method="post">
+        <label for="username">Username</label>
+        <input id="email" type="text" name="email" value="">
+        <label for="password">Password</label>
+        <input id="password" type="text" name="password" value="">
+        <input type="submit" value="LOGIN">
+    </form>
+  </body>
+  {{> footer}}
+</html>

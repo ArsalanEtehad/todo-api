@@ -66,7 +66,7 @@ UserSchema.methods.removeToken = function(token){
   })
 }
 
-//.statics.y is a model model where as .methods.x is a instance method
+//.statics.y is a model where as .methods.x is a instance method
 UserSchema.statics.findByToken = function (token){
   var User = this; //notice it's User not user. as this is a model method not an instance method
   var decoded;
@@ -103,12 +103,6 @@ UserSchema.statics.findByCredentials = function(email, password){
     })
   })
 }
-
-// var schema = new Schema(..);
-// schema.pre('save', function(next) {
-//   // do stuff
-//   next();
-// });
 
 
 //middleware PRE, runs before the action 'save'.
