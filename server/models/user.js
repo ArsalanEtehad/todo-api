@@ -40,7 +40,6 @@ var UserSchema = mongoose.Schema({
 UserSchema.methods.toJSON = function(){
   var user = this;
   var userObject = user.toObject()  //takes the mangoose variable and convert it to an js object
-
   return _.pick(userObject, ['_id', 'email'])
 }
 
@@ -48,10 +47,8 @@ UserSchema.methods.toJSON = function(){
 UserSchema.methods.generateAuthToken = function () {
   var user = this;
   var access = 'auth';
-  var token = jwt.sign({_id: user._id.toHexString() , access}, 'secretSalt').toString();
-
+  var token = jwt.sign({_id: user._id.toHexString() , access}, 'secretSalt',{expiresIn: '1h'}).toString();
   user.tokens = user.tokens.concat([{access, token}])
-
   return user.save().then(()=>{
     return token;
   });

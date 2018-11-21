@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-const {ObjectID} = require('mongodb')
+const {ObjectID} = require('mongodb');
+
 
 //creating a mongoose model with fields and types of them
 var Todo = mongoose.model('Todo', {
@@ -20,6 +21,7 @@ var Todo = mongoose.model('Todo', {
     type: ObjectID
   }
 })
+
 
 
 module.exports={

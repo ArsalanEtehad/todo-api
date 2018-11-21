@@ -10,6 +10,9 @@ var {User}= require('./models/user')
 const hbs = require('hbs') //handle bars
 var app = express()
 var session = require('express-session')
+var cookieParser = require('cookie-parser')
+app.use(cookieParser())
+
 
 const port = process.env.PORT;
 
@@ -67,20 +70,27 @@ app.post('/users/login',(req, res)=>{
   var body = _.pick(req.body, ['email','password']);
   User.findByCredentials(body.email, body.password).then((user)=>{
     return user.generateAuthToken().then((token)=>{
-    res.header('x-auth', token).send(user)//.cookie('x-auth', token);
-    //res.redirect('/users/me');
-
+    res.header('x-auth', token).cookie('auth', token);
+    res.redirect('/users/me');
   }).catch((e)=>{
     res.status(400).send();
   })
 }).catch((e)=>{
-  res.status(401).send();
+  res.status(401).redirect('/users/login')
 })
 });
 
 //--------------------------GET /users/me----------------------------
 app.get('/users/me', authenticate,(req,res)=>{
-  res.send(req.user);
+  res.render('me.hbs',{
+    pageTitle: `Hello ${req.user.email}`,
+    pContent: `your token will expire in 1 hour`
+  })
+  // res.render('me.hbs',{
+  //   pageTitle: `Hello ${req.user.email}`,
+  //   pContent: `${todoss}`
+  // })
+  //res.send(req.user);
 })
 
 
@@ -165,7 +175,7 @@ app.post('/todos', authenticate,  (req, res)=>{
     _creator: req.user._id
   })
   todo.save().then((doc)=>{
-    res.send({doc})
+    res.redirect('/users/me');
   }).catch((err)=>{
     res.status(400).send(err)
   })
